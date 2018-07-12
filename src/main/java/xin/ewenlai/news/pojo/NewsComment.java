@@ -6,11 +6,11 @@ import javax.validation.constraints.Size;
 import java.sql.Timestamp;
 
 /**
- * description :
+ * description : 新闻的评论类
  *
  * @author lwwen
  * date : 2018-07-12 16:17
- * @version 0.0.0
+ * @version 0.0.1
  */
 @Entity
 public class NewsComment {

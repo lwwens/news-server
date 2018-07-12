@@ -7,7 +7,7 @@ import java.util.logging.Logger;
  *
  * @author lwwen
  * date : 2018-07-12 13:17
- * @version 0.0.0
+ * @version 0.0.1
  */
 public class NewsLogger {
     private static Logger logger = Logger.getLogger("NewsLogger");

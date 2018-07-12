@@ -5,7 +5,7 @@ package xin.ewenlai.news.utils;
  *
  * @author lwwen
  * date : 2018-07-12 08:46
- * @version 0.0.0
+ * @version 0.0.1
  */
 public enum Code {
     SUCCESS(1),
