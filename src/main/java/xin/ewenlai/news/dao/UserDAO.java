@@ -11,5 +11,7 @@ import xin.ewenlai.news.pojo.User;
  * @version 0.0.0
  */
 public interface UserDAO extends JpaRepository<User,String> {
+    User findByNameAndPassword(String name,String password);
+
     User findByName(String name);
 }
