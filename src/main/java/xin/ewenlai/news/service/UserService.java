@@ -34,8 +34,8 @@ public class UserService {
     /**
      * 获取用户，密码除外。
      *
-     * @param username
-     * @return
+     * @param username 用户名
+     * @return 用户对象。
      */
     public User getUser(String username) {
         User user = userDAO.findByName(username);
@@ -43,9 +43,15 @@ public class UserService {
         return user;
     }
 
+    /**
+     * 从请求中获取用户信息，添加用户记录，用户头像是默认图片。
+     *
+     * @param request 请求
+     * @return 注册成功或失败
+     */
     public boolean register(HttpServletRequest request) {
         String username = request.getParameter("username");
-        if (null == userDAO.findByName(username)) {
+        if (!userDAO.existsByName(username)) {
             User user = new User();
             user.setName(username);
             user.setPassword(request.getParameter("password"));
@@ -56,8 +62,27 @@ public class UserService {
             NewsLogger.info(user.toString() + "注册成功");
             return true;
         }
-        NewsLogger.info(username + "已存在，注册失败。");
+        NewsLogger.info("用户" + username + "已存在，注册失败。");
         return false;
     }
 
+    /**
+     * 从请求中获取用户信息，修改用户信息，但不修改用户头像。
+     *
+     * @param request 请求
+     * @return 修改成功或失败。
+     */
+    public boolean modifyUser(String username, HttpServletRequest request) {
+        User user = userDAO.findByName(username);
+        if (user != null) {
+            user.setPassword(request.getParameter("password"));
+            user.setNickname(request.getParameter("nickname"));
+            user.setSex(request.getParameter("sex"));
+            userDAO.save(user);
+            NewsLogger.info(user.toString() + "修改信息成功");
+            return true;
+        }
+        NewsLogger.info("用户" + username + "不存在。");
+        return false;
+    }
 }

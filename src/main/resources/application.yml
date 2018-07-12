@@ -12,3 +12,6 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
+  # Thymeleaf 模板热启动
+  thymeleaf:
+    cache: false

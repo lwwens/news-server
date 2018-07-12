@@ -59,6 +59,12 @@ public class UserController {
         return userService.getUser(username);
     }
 
+    /**
+     * 注册用户，从请求中获取用户信息。注册用户时使用默认头像。
+     *
+     * @param request 请求
+     * @return 注册结果
+     */
     @RequestMapping(value = "", method = RequestMethod.POST)
     public JSONObject register(HttpServletRequest request) {
         JSONObject jsonObject = new JSONObject();
@@ -72,4 +78,24 @@ public class UserController {
         }
         return jsonObject;
     }
+
+    /**
+     * 从请求中获取用户信息并修改。
+     *
+     * @param request 请求
+     * @return 修改结果
+     */
+    @RequestMapping(value = "/{username}", method = RequestMethod.PUT)
+    public JSONObject modifyUser(@PathVariable String username, HttpServletRequest request) {
+        JSONObject jsonObject = new JSONObject();
+        if(userService.modifyUser(username, request)) {
+            jsonObject.put("code", Code.SUCCESS);
+            jsonObject.put("message", username + "修改信息成功。");
+        } else {
+            jsonObject.put("code", Code.FAIL);
+            jsonObject.put("message", "用户" + username + "不存在。");
+        }
+        return jsonObject;
+    }
+
 }
