@@ -2,10 +2,7 @@ package xin.ewenlai.news.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import xin.ewenlai.news.dao.UserDAO;
 import xin.ewenlai.news.pojo.User;
 import xin.ewenlai.news.utils.Code;
@@ -24,6 +21,13 @@ public class UserController {
     @Autowired
     private UserDAO userDAO;
 
+    /**
+     * 判断用户是否登录。
+     *
+     * @param username 用户名
+     * @param password 密码
+     * @return
+     */
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public Object login(@RequestParam(value = "username") String username,
                          @RequestParam(value = "password") String password) {
@@ -38,5 +42,12 @@ public class UserController {
         }
 
         return jsonObject;
+    }
+
+    @RequestMapping(value = "/{username}")
+    public User getUser(@PathVariable String username) {
+        User user = userDAO.findByName(username);
+        user.setPassword("********");
+        return user;
     }
 }
