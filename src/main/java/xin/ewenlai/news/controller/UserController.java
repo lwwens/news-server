@@ -21,8 +21,12 @@ import javax.servlet.http.HttpServletRequest;
 @RestController
 @RequestMapping(value = "/user")
 public class UserController {
+    private final UserService userService;
+
     @Autowired
-    UserService userService;
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
 
     /**
      * 判断用户是否登录。

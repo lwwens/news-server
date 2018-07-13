@@ -24,11 +24,15 @@ import java.util.List;
  */
 @Service
 public class NewsCommentService {
-    @Autowired
-    private NewsCommentDAO newsCommentDAO;
+    private final NewsCommentDAO newsCommentDAO;
+
+    private final UserDAO userDAO;
 
     @Autowired
-    private UserDAO userDAO;
+    public NewsCommentService(NewsCommentDAO newsCommentDAO, UserDAO userDAO) {
+        this.newsCommentDAO = newsCommentDAO;
+        this.userDAO = userDAO;
+    }
 
     /**
      * 从请求中获取用户名、评论内容及被评论新闻的 URL ，添加评论。

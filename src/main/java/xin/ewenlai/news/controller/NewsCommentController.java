@@ -25,8 +25,12 @@ import java.util.List;
 @RestController
 @RequestMapping(value = "/comment")
 public class NewsCommentController {
+    private final NewsCommentService newsCommentService;
+
     @Autowired
-    private NewsCommentService newsCommentService;
+    public NewsCommentController(NewsCommentService newsCommentService) {
+        this.newsCommentService = newsCommentService;
+    }
 
     /**
      * 添加评论。

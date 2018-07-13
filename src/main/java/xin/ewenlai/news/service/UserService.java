@@ -18,8 +18,12 @@ import javax.servlet.http.HttpServletRequest;
  */
 @Service
 public class UserService {
+    private final UserDAO userDAO;
+
     @Autowired
-    private UserDAO userDAO;
+    public UserService(UserDAO userDAO) {
+        this.userDAO = userDAO;
+    }
 
     /**
      * 验证是否登录成功。
