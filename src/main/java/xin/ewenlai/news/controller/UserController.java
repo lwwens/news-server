@@ -36,8 +36,9 @@ public class UserController {
      * @return 登录结果
      */
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public Object login(@NotNull @RequestParam(value = "username") String username,
-                        @NotNull @RequestParam(value = "password") String password) {
+    public Object login(HttpServletRequest request) {
+        String username = request.getParameter("username");
+        String password = request.getParameter("password");
         JSONObject jsonObject = new JSONObject();
         if (userService.login(username, password)) {
             jsonObject.put("code", Code.SUCCESS.getValue());
@@ -60,7 +61,7 @@ public class UserController {
      * @return 用户对象
      */
     @RequestMapping(value = "/{username}", method = RequestMethod.GET)
-    public JSONObject getUser(@PathVariable String username) {
+    public JSONObject getUserByName(@PathVariable String username) {
         JSONObject jsonObject = new JSONObject();
         User user = userService.getUser(username);
         if (user != null) {

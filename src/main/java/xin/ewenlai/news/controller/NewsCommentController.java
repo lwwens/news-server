@@ -61,7 +61,7 @@ public class NewsCommentController {
      * @return 返回 JSON 数据
      */
     @RequestMapping(value = "/{newsURL}", method = RequestMethod.GET)
-    public JSONObject getComments(@PathVariable String newsURL) {
+    public JSONObject getCommentsByNewsURL(@PathVariable String newsURL) {
         JSONObject jsonObject = new JSONObject();
         List<NewsComment> newsComments = newsCommentService.getComments(newsURL);
         if (newsComments != null) {
@@ -74,6 +74,32 @@ public class NewsCommentController {
             jsonObject.put("message", "获取评论失败。");
             jsonObject.put("data", null);
             NewsLogger.info("获取评论失败。");
+        }
+        return jsonObject;
+    }
+
+    /**
+     * 删除指定 ID 的评论。
+     *
+     * @param id 评论 ID
+     * @return 返回请求结果
+     * @date 18-7-13
+     * @time 下午5:33
+     * @author lwwen
+     */
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+    public JSONObject deleteCommentById(@PathVariable long id) {
+        JSONObject jsonObject = new JSONObject();
+        if (newsCommentService.deleteCommentById(id)) {
+            jsonObject.put("code", Code.SUCCESS.getValue());
+            jsonObject.put("message", "删除评论" + id + "成功。");
+            jsonObject.put("data", null);
+            NewsLogger.info("删除评论" + id + "成功。");
+        } else {
+            jsonObject.put("code", Code.FAIL.getValue());
+            jsonObject.put("message", "评论" + id + "不存在，删除失败。");
+            jsonObject.put("data", null);
+            NewsLogger.info("评论" + id + "不存在，删除失败。");
         }
         return jsonObject;
     }

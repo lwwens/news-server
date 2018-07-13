@@ -16,3 +16,7 @@ spring:
   # Thymeleaf 模板热启动
   thymeleaf:
     cache: false
+  # 热启动设置
+  devtools:
+    restart:
+      enabled: true

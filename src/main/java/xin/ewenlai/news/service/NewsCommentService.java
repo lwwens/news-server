@@ -39,6 +39,9 @@ public class NewsCommentService {
      *
      * @param request 请求
      * @return 评论成功或失败
+     * @date 18-7-13
+     * @time 下午5:35
+     * @author lwwen
      */
     public boolean addComment(HttpServletRequest request) {
         String username = request.getParameter("username");
@@ -70,6 +73,9 @@ public class NewsCommentService {
      *
      * @param newsURL 新闻链接
      * @return 返回评论数组
+     * @date 18-7-13
+     * @time 下午5:34
+     * @author lwwen
      */
     public List<NewsComment> getComments(String newsURL) {
         if (NewsCommentUtils.IsURL(newsURL)) {
@@ -78,4 +84,20 @@ public class NewsCommentService {
         return null;
     }
 
+    /**
+     * 删除指定 id 的评论。
+     *
+     * @param id 评论 id
+     * @return 删除评论成功或失败
+     * @date 18-7-13
+     * @time 下午5:37
+     * @author lwwen
+     */
+    public boolean deleteCommentById(long id) {
+        if (newsCommentDAO.existsById(id)) {
+            newsCommentDAO.deleteById(id);
+            return true;
+        }
+        return false;
+    }
 }
