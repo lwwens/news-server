@@ -9,6 +9,7 @@ spring:
   http:
     encoding:
       charset: UTF-8
+  # 根据实体类自动创建数据库表
   jpa:
     hibernate:
       ddl-auto: update
