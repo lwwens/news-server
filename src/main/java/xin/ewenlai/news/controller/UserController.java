@@ -15,7 +15,7 @@ import javax.servlet.http.HttpServletRequest;
  *
  * @author lwwen
  * date : 2018-07-11 19:41
- * @version 0.0.1
+ * @version 0.0.2
  */
 @RestController
 @RequestMapping(value = "/user")
@@ -35,15 +35,13 @@ public class UserController {
                         @RequestParam(value = "password") String password) {
         JSONObject jsonObject = new JSONObject();
         if (userService.login(username, password)) {
-            jsonObject.put("code", Code.SUCCESS);
+            jsonObject.put("code", Code.Success.getValue());
             jsonObject.put("message", "登录成功。");
-
             NewsLogger.info(username + "登录成功。");
         } else {
-            jsonObject.put("code", Code.FAIL);
-            jsonObject.put("message", "帐号或密码不存在。");
-
-            NewsLogger.warning(username + "登录失败。");
+            jsonObject.put("code", Code.UserIsNotExists.getValue());
+            jsonObject.put("message", "用户不存在。");
+            NewsLogger.warning("用户" + username + "不存在。");
         }
         return jsonObject;
     }
@@ -70,11 +68,11 @@ public class UserController {
         JSONObject jsonObject = new JSONObject();
         String username = request.getParameter("username");
         if (userService.register(request)) {
-            jsonObject.put("code", Code.SUCCESS);
+            jsonObject.put("code", Code.Success.getValue());
             jsonObject.put("message", "新用户" + username + "注册成功。");
         } else {
-            jsonObject.put("code", Code.FAIL);
-            jsonObject.put("message", "旧用户" + username + "已存在，注册失败。");
+            jsonObject.put("code", Code.UserIsExists.getValue());
+            jsonObject.put("message", "用户" + username + "已存在，注册失败。");
         }
         return jsonObject;
     }
@@ -88,11 +86,11 @@ public class UserController {
     @RequestMapping(value = "/{username}", method = RequestMethod.PUT)
     public JSONObject modifyUser(@PathVariable String username, HttpServletRequest request) {
         JSONObject jsonObject = new JSONObject();
-        if(userService.modifyUser(username, request)) {
-            jsonObject.put("code", Code.SUCCESS);
+        if (userService.modifyUser(username, request)) {
+            jsonObject.put("code", Code.Success.getValue());
             jsonObject.put("message", username + "修改信息成功。");
         } else {
-            jsonObject.put("code", Code.FAIL);
+            jsonObject.put("code", Code.UserIsNotExists.getValue());
             jsonObject.put("message", "用户" + username + "不存在。");
         }
         return jsonObject;

@@ -5,7 +5,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import xin.ewenlai.news.service.NewsCommentService;
 import xin.ewenlai.news.utils.Code;
 
@@ -34,11 +33,8 @@ public class NewsCommentController {
     public JSONObject addComment(HttpServletRequest request) {
         JSONObject jsonObject = new JSONObject();
         if (newsCommentService.addComment(request)) {
-            jsonObject.put("code", Code.SUCCESS);
+            jsonObject.put("code", Code.Success.getValue());
             jsonObject.put("message", request.getParameter("username") + "评论成功。");
-        } else {
-            jsonObject.put("code", Code.FAIL);
-            jsonObject.put("message", request.getParameter("username") + "评论失败。");
         }
         return jsonObject;
     }
