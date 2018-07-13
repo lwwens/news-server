@@ -10,7 +10,7 @@ import java.util.regex.Pattern;
  *
  * @author lwwen
  * date : 2018-07-13 13:23
- * @version 0.0.0
+ * @version 0.0.3
  */
 public class UserUtils {
     /**

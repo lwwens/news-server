@@ -104,12 +104,15 @@ public class UserController {
     @RequestMapping(value = "/{username}", method = RequestMethod.PUT)
     public JSONObject modifyUser(@PathVariable String username, HttpServletRequest request) {
         JSONObject jsonObject = new JSONObject();
-        if (userService.modifyUser(username, request)) {
+        User user = userService.modifyUser(username, request);
+        if (user != null) {
             jsonObject.put("code", Code.SUCCESS.getValue());
             jsonObject.put("message", username + "修改信息成功。");
+            jsonObject.put("data", user);
         } else {
             jsonObject.put("code", Code.FAIL.getValue());
-            jsonObject.put("message", "用户" + username + "不存在。");
+            jsonObject.put("message", "用户" + username + "修改信息失败。");
+            jsonObject.put("data", null);
         }
         return jsonObject;
     }
