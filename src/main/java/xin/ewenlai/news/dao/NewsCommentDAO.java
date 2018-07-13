@@ -3,6 +3,8 @@ package xin.ewenlai.news.dao;
 import org.springframework.data.jpa.repository.JpaRepository;
 import xin.ewenlai.news.pojo.NewsComment;
 
+import java.util.List;
+
 /**
  * description : 访问新闻评论表的接口。
  *
@@ -11,5 +13,5 @@ import xin.ewenlai.news.pojo.NewsComment;
  * @version 0.0.1
  */
 public interface NewsCommentDAO extends JpaRepository<NewsComment, Long> {
-
+    List<NewsComment> findByNewsURL(String newsURL);
 }

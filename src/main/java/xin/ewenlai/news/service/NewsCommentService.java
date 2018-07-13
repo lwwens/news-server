@@ -12,8 +12,8 @@ import xin.ewenlai.news.utils.UserUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 /**
  * description : 新闻评论服务，为控制器提供评论的 CRUP 服务。
@@ -59,6 +59,19 @@ public class NewsCommentService {
             }
         }
         return false;
+    }
+
+    /**
+     * 通过新闻 URL 获取评论。
+     *
+     * @param newsURL 新闻链接
+     * @return 返回评论数组
+     */
+    public List<NewsComment> getComments(String newsURL) {
+        if (NewsCommentUtils.IsURL(newsURL)) {
+            return newsCommentDAO.findByNewsURL(newsURL);
+        }
+        return null;
     }
 
 }
