@@ -1,6 +1,7 @@
 package xin.ewenlai.news.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import xin.ewenlai.news.pojo.User;
@@ -9,10 +10,6 @@ import xin.ewenlai.news.utils.Code;
 import xin.ewenlai.news.utils.NewsLogger;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * description : 用户控制器，提供用户的登录、注册、修改信息等功能。
@@ -35,52 +32,18 @@ public class UserController {
      * @return 登录结果
      */
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public Object login(@RequestParam(value = "username") String username,
-                        @RequestParam(value = "password") String password) {
+    public Object login(@NotNull @RequestParam(value = "username") String username,
+                        @NotNull @RequestParam(value = "password") String password) {
         JSONObject jsonObject = new JSONObject();
-        List<Integer> codes = new ArrayList<>();
-        // 判断 username 长度是否合理
-        if (username.length() <= 6 || username.length() >= 20) {
-            codes.add(Code.UsernameLengthIsWrong.getValue());
-        }
-
-        // 判断 username 符号是否正确
-        String usernameRegEx = "[a-zA-Z]{1}[a-zA-Z0-9_]";   // 跟变量名规则一样
-        Pattern usernamePattern = Pattern.compile(usernameRegEx);
-        Matcher usernameMatcher = usernamePattern.matcher(username);
-        if (!usernameMatcher.find()) {
-            codes.add(Code.UsernameSymbolIsWrong.getValue());
-        }
-
-        // 判断 password 长度是否合理
-        if (password.length() <= 6 || password.length() >= 20) {
-            codes.add(Code.PasswordLengthIsWrong.getValue());
-        }
-
-        // 判断 password 符号是否合理
-        int flag = 0;
-        flag += password.matches(".*\\d+.*") ? 1 : 0;        // 判断是否含有数字
-        flag += password.matches(".*[a-zA-Z]+.*") ? 1 : 0;   // 判断是否含有字母
-        flag += password.matches(".*[~!@#$%^&*()_+|<>,.?/:;'\\[\\]{}\"]+.*") ? 1 : 0;   // 判断是否含有特殊符号
-        if (flag <= 1) {
-            codes.add(Code.PasswordSymbolIsWrong.getValue());
-        }
-        // 判断 username 或 password 是否不符合规则
-        if (codes.size() > 0) {
-            jsonObject.put("codes", codes);
-            jsonObject.put("message", "用户名或密码不符合规则");
-            return jsonObject;
-        }
-
         if (userService.login(username, password)) {
-            codes.add(Code.Success.getValue());
-            jsonObject.put("codes", codes);
+            jsonObject.put("code", Code.SUCCESS.getValue());
             jsonObject.put("message", "用户" + username + "登录成功。");
+            jsonObject.put("data", userService.getUser(username));
             NewsLogger.info("用户" + username + "登录成功。");
         } else {
-            codes.add(Code.UserIsNotExists.getValue());
-            jsonObject.put("codes", codes);
-            jsonObject.put("message", "用户" + username + "不存在。");
+            jsonObject.put("code", Code.FAIL.getValue());
+            jsonObject.put("message", "用户名或密码不存在。");
+            jsonObject.put("data", null);
             NewsLogger.warning("用户" + username + "不存在。");
         }
         return jsonObject;
@@ -93,8 +56,19 @@ public class UserController {
      * @return 用户对象
      */
     @RequestMapping(value = "/{username}", method = RequestMethod.GET)
-    public User getUser(@PathVariable String username) {
-        return userService.getUser(username);
+    public JSONObject getUser(@PathVariable String username) {
+        JSONObject jsonObject = new JSONObject();
+        User user = userService.getUser(username);
+        if (user != null) {
+            jsonObject.put("code", Code.SUCCESS.getValue());
+            jsonObject.put("message", "获取用户" + username + "信息成功。");
+            jsonObject.put("data", user);
+        } else {
+            jsonObject.put("code", Code.FAIL.getValue());
+            jsonObject.put("message", "获取用户" + username + "信息成功。");
+            jsonObject.put("data", null);
+        }
+        return jsonObject;
     }
 
     /**
@@ -108,11 +82,15 @@ public class UserController {
         JSONObject jsonObject = new JSONObject();
         String username = request.getParameter("username");
         if (userService.register(request)) {
-            jsonObject.put("code", Code.Success.getValue());
+            jsonObject.put("code", Code.SUCCESS.getValue());
             jsonObject.put("message", "新用户" + username + "注册成功。");
+            jsonObject.put("data", userService.getUser(username));
+            NewsLogger.info("新用户" + username + "注册成功。");
         } else {
-            jsonObject.put("code", Code.UserIsExists.getValue());
+            jsonObject.put("code", Code.FAIL.getValue());
             jsonObject.put("message", "用户" + username + "已存在，注册失败。");
+            jsonObject.put("data", null);
+            NewsLogger.info("用户" + username + "已存在，注册失败。");
         }
         return jsonObject;
     }
@@ -127,10 +105,10 @@ public class UserController {
     public JSONObject modifyUser(@PathVariable String username, HttpServletRequest request) {
         JSONObject jsonObject = new JSONObject();
         if (userService.modifyUser(username, request)) {
-            jsonObject.put("code", Code.Success.getValue());
+            jsonObject.put("code", Code.SUCCESS.getValue());
             jsonObject.put("message", username + "修改信息成功。");
         } else {
-            jsonObject.put("code", Code.UserIsNotExists.getValue());
+            jsonObject.put("code", Code.FAIL.getValue());
             jsonObject.put("message", "用户" + username + "不存在。");
         }
         return jsonObject;

@@ -33,7 +33,7 @@ public class NewsCommentController {
     public JSONObject addComment(HttpServletRequest request) {
         JSONObject jsonObject = new JSONObject();
         if (newsCommentService.addComment(request)) {
-            jsonObject.put("code", Code.Success.getValue());
+            jsonObject.put("code", Code.SUCCESS.getValue());
             jsonObject.put("message", request.getParameter("username") + "评论成功。");
         }
         return jsonObject;

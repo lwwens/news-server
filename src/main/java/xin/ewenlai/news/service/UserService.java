@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import xin.ewenlai.news.dao.UserDAO;
 import xin.ewenlai.news.pojo.User;
 import xin.ewenlai.news.utils.NewsLogger;
+import xin.ewenlai.news.utils.UserUtils;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -28,7 +29,11 @@ public class UserService {
      * @return 登录成功或失败
      */
     public boolean login(String username, String password) {
-        return null != userDAO.findByNameAndPassword(username, password);
+        return UserUtils.UsernameLengthIsRight(username) &&
+                UserUtils.UsernameSymbolIsRight(username) &&
+                UserUtils.PasswordLengthIsRight(password) &&
+                UserUtils.PasswordSymbolIsRight(password) &&
+                null != userDAO.findByNameAndPassword(username, password);
     }
 
     /**
@@ -51,16 +56,26 @@ public class UserService {
      */
     public boolean register(HttpServletRequest request) {
         String username = request.getParameter("username");
-        if (!userDAO.existsByName(username)) {
+        // 判断用户名是否符合要求，且该用户是否不存在
+        if (UserUtils.UsernameLengthIsRight(username) &&
+                UserUtils.UsernameSymbolIsRight(username) &&
+                !userDAO.existsByName(username)) {
             User user = new User();
             user.setName(username);
             user.setPassword(request.getParameter("password"));
             user.setNickname(request.getParameter("nickname"));
             user.setSex(request.getParameter("sex"));
-            user.setProfilePicture(User.defaultProfilePiecture);
-            userDAO.save(user);
-            NewsLogger.info(user.toString() + "注册成功");
-            return true;
+
+            // 判断其他字段是否符合要求
+            if (UserUtils.PasswordLengthIsRight(user.getPassword()) &&
+                    UserUtils.PasswordSymbolIsRight(user.getPassword()) &&
+                    UserUtils.NicknameLengthIsRight(user.getNickname()) &&
+                    UserUtils.SexIsRight(user.getSex())) {
+                user.setProfilePicture(User.defaultProfilePiecture);
+                userDAO.save(user);
+                NewsLogger.info(user.toString() + "注册成功");
+                return true;
+            }
         }
         NewsLogger.info("用户" + username + "已存在，注册失败。");
         return false;

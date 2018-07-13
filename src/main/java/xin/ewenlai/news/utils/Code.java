@@ -7,21 +7,12 @@ import org.jetbrains.annotations.Nullable;
  * description : 枚举请求返回 JSON 数据中的代码。
  *
  * @author lwwen
- * date : 2018-07-12 08:46
- * @version 0.0.1
+ * date : 2018-07-13 13:22
+ * @version 0.0.3
  */
 public enum Code {
-    Success(0),
-    UsernameLengthIsWrong(101),
-    UsernameSymbolIsWrong(102),
-    PasswordLengthIsWrong(103),
-    PasswordSymbolIsWrong(104),
-    NicknameLengthIsWrong(105),
-    SexValueIsWrong(106),
-    UserIsNotExists(107),
-    UserIsExists(108),
-    CommentIsLong(201),
-    CommentIDNotExists(301);
+    SUCCESS(0),
+    FAIL(1);
 
     private int value;
 
@@ -29,37 +20,26 @@ public enum Code {
         this.value = value;
     }
 
+    /**
+     * @param value 要转换为枚举类型的值
+     * @return 转换结果
+     */
     @Nullable
     @Contract(pure = true)
     public static Code valueOf(int value) {
         switch (value) {
             case 0:
-                return Success;
-            case 101:
-                return UsernameLengthIsWrong;
-            case 102:
-                return UsernameSymbolIsWrong;
-            case 103:
-                return PasswordLengthIsWrong;
-            case 104:
-                return PasswordSymbolIsWrong;
-            case 105:
-                return NicknameLengthIsWrong;
-            case 106:
-                return SexValueIsWrong;
-            case 107:
-                return UserIsNotExists;
-            case 108:
-                return UserIsExists;
-            case 201:
-                return CommentIsLong;
-            case 301:
-                return CommentIDNotExists;
+                return SUCCESS;
+            case 1:
+                return FAIL;
             default:
                 return null;
         }
     }
 
+    /**
+     * @return 返回枚举的值
+     */
     @Contract(pure = true)
     public int getValue() {
         return value;
