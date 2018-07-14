@@ -1,7 +1,6 @@
 package xin.ewenlai.news.controller;
 
 import com.alibaba.fastjson.JSONObject;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import xin.ewenlai.news.pojo.User;
@@ -30,10 +29,11 @@ public class UserController {
 
     /**
      * 判断用户是否登录。
-     *
-     * @param username 用户名
-     * @param password 密码
+     * @param request 请求
      * @return 登录结果
+     * @date 18-7-14
+     * @time 上午8:27
+     * @author lwwen
      */
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public Object login(HttpServletRequest request) {

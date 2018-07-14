@@ -46,7 +46,8 @@ public class NewsCommentService {
     public boolean addComment(HttpServletRequest request) {
         String username = request.getParameter("username");
         // 判断用户名是否符合要求，并判断是否存在
-        if (UserUtils.UsernameLengthIsRight(username) &&
+        if (username != null &&
+                UserUtils.UsernameLengthIsRight(username) &&
                 UserUtils.UsernameSymbolIsRight(username) &&
                 userDAO.existsByName(username)) {
             NewsComment newsComment = new NewsComment();

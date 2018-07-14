@@ -16,7 +16,7 @@ import java.sql.Timestamp;
 public class NewsComment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long ID;
+    private long id;
 
     @NotNull
     @ManyToOne
@@ -34,12 +34,12 @@ public class NewsComment {
     @Size(max = 200)
     private String content;
 
-    public long getID() {
-        return ID;
+    public long getId() {
+        return id;
     }
 
-    public void setID(long ID) {
-        this.ID = ID;
+    public void setId(long id) {
+        this.id = id;
     }
 
     public User getUser() {
