@@ -14,7 +14,7 @@ import javax.validation.constraints.Size;
 @Entity
 @Table(name = "users")
 public class User {
-    public static final String defaultProfilePiecture = "/static/image/monkey.jpg";
+    public static final String defaultProfilePiecture = "/static/upload/monkey.jpg";
 
     @Id
     @Size(min = 6, max = 20)

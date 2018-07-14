@@ -9,8 +9,6 @@ import xin.ewenlai.news.pojo.NewsComment;
 import xin.ewenlai.news.pojo.NewsCommentLike;
 import xin.ewenlai.news.pojo.User;
 
-import javax.servlet.http.HttpServletRequest;
-
 /**
  * @author lwwen
  * @version 0.0.0
@@ -32,19 +30,20 @@ public class NewsCommentLikeService {
     /**
      * 添加某评论的点赞。
      *
-     * @param request 请求
+     * @param username  用户名
+     * @param commentId 评论 Id
      * @return 点赞成功或失败
      * @date 18-7-14
      * @time 上午11:23
      * @author lwwen
      */
-    public boolean addLike(HttpServletRequest request) {
+    public boolean addLike(String username, long commentId) {
         NewsCommentLike like = new NewsCommentLike();
         User user = new User();
-        user.setName(request.getParameter("username"));
+        user.setName(username);
         like.setUser(user);
         NewsComment newsComment = new NewsComment();
-        newsComment.setId(Long.parseLong(request.getParameter("commentId")));
+        newsComment.setId(commentId);
         like.setNewsComment(newsComment);
         if (userDAO.existsByName(user.getName()) &&
                 newsCommentDAO.existsById(newsComment.getId())) {
@@ -54,12 +53,11 @@ public class NewsCommentLikeService {
         return false;
     }
 
-
     /**
      * 判断某人是否为某评论点赞。
      *
      * @param username  用户名
-     * @param commentId 评论Id
+     * @param commentId 评论 Id
      * @return 点赞与否
      * @date 18-7-14
      * @time 上午11:24
@@ -70,7 +68,24 @@ public class NewsCommentLikeService {
         user.setName(username);
         NewsComment newsComment = new NewsComment();
         newsComment.setId(commentId);
-        return likeDAO.findByUserAndCommentId(user, newsComment) != null;
+        return likeDAO.findByUserAndComment(user, newsComment) != null;
+    }
+
+    /**
+     * 根据用户名与评论 Id 删除点赞。
+     *
+     * @param username  用户名
+     * @param commentId 评论 Id
+     * @date 18-7-14
+     * @time 下午3:16
+     * @author lwwen
+     */
+    public void deleteLikeByUsernameAndCommentId(String username, long commentId) {
+        User user = new User();
+        user.setName(username);
+        NewsComment newsComment = new NewsComment();
+        newsComment.setId(commentId);
+        likeDAO.deleteByUserAndComment(user, newsComment);
     }
 
 }

@@ -42,7 +42,7 @@ public class NewsCommentLikeController {
         long commentId = Long.parseLong(request.getParameter("commentId"));
         // 判断用户是否已经点赞某评论
         if (!newsCommentLikeService.existsByUsernameAndCommentId(username, commentId)) {
-            if (newsCommentLikeService.addLike(request)) {
+            if (newsCommentLikeService.addLike(username, commentId)) {
                 jsonObject.put("code", Code.SUCCESS.getValue());
                 jsonObject.put("message", "用户" + username + "点赞id为" + commentId + "的评论成功。");
                 NewsLogger.info("用户" + username + "点赞id为" + commentId + "的评论成功。");
@@ -58,4 +58,25 @@ public class NewsCommentLikeController {
         }
         return jsonObject;
     }
+
+    /**
+     * 根据请求中的用户名和评论id取消点赞。
+     *
+     * @param request 请求
+     * @return 删除结果
+     * @date 18-7-14
+     * @time 下午3:11
+     * @author lwwen
+     */
+    @RequestMapping(value = "/delete", method = RequestMethod.POST)
+    public JSONObject deleteLikeByUsernameAndCommentId(HttpServletRequest request) {
+        JSONObject jsonObject = new JSONObject();
+        String username = request.getParameter("username");
+        long commentId = Long.parseLong(request.getParameter("commentId"));
+        newsCommentLikeService.deleteLikeByUsernameAndCommentId(username, commentId);
+        jsonObject.put("code", Code.SUCCESS.getValue());
+        jsonObject.put("message", "用户" + username + "取消点赞 id 为" + commentId + "的评论。");
+        return jsonObject;
+    }
+
 }
