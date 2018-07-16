@@ -2,13 +2,17 @@ package xin.ewenlai.news.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import xin.ewenlai.news.pojo.User;
 import xin.ewenlai.news.service.UserService;
 import xin.ewenlai.news.utils.Code;
+import xin.ewenlai.news.utils.Constants;
 import xin.ewenlai.news.utils.NewsLogger;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.*;
 
 /**
  * description : 用户控制器，提供用户的登录、注册、修改信息等功能。
@@ -90,12 +94,10 @@ public class UserController {
         if (userService.register(request)) {
             jsonObject.put("code", Code.SUCCESS.getValue());
             jsonObject.put("message", "新用户" + username + "注册成功。");
-            jsonObject.put("data", userService.getUser(username));
             NewsLogger.info("新用户" + username + "注册成功。");
         } else {
             jsonObject.put("code", Code.FAIL.getValue());
             jsonObject.put("message", "用户" + username + "已存在，注册失败。");
-            jsonObject.put("data", null);
             NewsLogger.info("用户" + username + "已存在，注册失败。");
         }
         return jsonObject;
@@ -123,6 +125,15 @@ public class UserController {
         return jsonObject;
     }
 
+    /**
+     * 用户退出。
+     *
+     * @param username 用户名
+     * @return 退出结果
+     * @date 18-7-16
+     * @time 下午4:55
+     * @author lwwen
+     */
     @RequestMapping(value = "/logout", method = RequestMethod.GET)
     public JSONObject logout(@RequestParam(value = "username") String username) {
         JSONObject jsonObject = new JSONObject();
@@ -132,6 +143,28 @@ public class UserController {
         } else {
             jsonObject.put("code", Code.FAIL.getValue());
             jsonObject.put("message", "用户" + username + "不存在");
+        }
+        return jsonObject;
+    }
+
+    /**
+     * 上传头像。
+     *
+     * @param multipartFile 上传的头像文件
+     * @return 上传结果
+     * @date 18-7-16
+     * @time 下午4:59
+     * @author lwwen
+     */
+    @RequestMapping(value = "/profilePicture", method = RequestMethod.POST)
+    public JSONObject uploadProfilePicture(@RequestParam(value = "profilePicture") MultipartFile multipartFile,
+                                           @RequestParam(value = "username") String username) {
+        JSONObject jsonObject = new JSONObject();
+        if (!multipartFile.isEmpty()) {
+            jsonObject = userService.uploadProfilePicture(multipartFile, username);
+        } else {
+            jsonObject.put("code", Code.FAIL.getValue());
+            jsonObject.put("message", "用户头像上传失败");
         }
         return jsonObject;
     }

@@ -20,7 +20,7 @@ public class UserUtils {
      * @return 结果
      */
     public static boolean UsernameLengthIsRight(@NotNull String username) {
-        return username.codePointCount(0, username.length()) >= 6 &&
+        return username.codePointCount(0, username.length()) >= 3 &&
                 username.codePointCount(0, username.length()) <= 20;
     }
 
@@ -70,11 +70,11 @@ public class UserUtils {
      * @return 结果
      */
     public static boolean NicknameLengthIsRight(@NotNull String nickname) {
-        return nickname.codePointCount(0, nickname.length()) >= 6 &&
+        return nickname.codePointCount(0, nickname.length()) >= 3 &&
                 nickname.codePointCount(0, nickname.length()) <= 30;
     }
 
     public static boolean SexIsRight(String sex) {
-        return "男".equals(sex) || "女".equals(sex);
+        return "M".equals(sex) || "F".equals(sex);
     }
 }

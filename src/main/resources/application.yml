@@ -22,3 +22,5 @@ spring:
       enabled: true
   mvc:
     static-path-pattern: /static/**
+img:
+  location: /home/lwwen/Documents/Project/IdeaProjects/news/src/main/resources/static/upload/image

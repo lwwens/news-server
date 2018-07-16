@@ -1,5 +1,7 @@
 package xin.ewenlai.news.pojo;
 
+import org.jetbrains.annotations.Contract;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -14,14 +16,15 @@ import javax.validation.constraints.Size;
 @Entity
 @Table(name = "users")
 public class User {
-    public static final String defaultProfilePiecture = "/static/upload/monkey.jpg";
+    public static final String defaultProfilePath = "/static/upload/image";
+    private static final String defaultPicture = "/monkey.jpg";
 
     @Id
-    @Size(min = 6, max = 20)
+    @Size(min = 3, max = 20)
     private String name;
 
     @NotNull
-    @Size(min = 6, max = 30)
+    @Size(min = 3, max = 30)
     private String nickname;
 
     @NotNull
@@ -74,6 +77,12 @@ public class User {
 
     public void setProfilePicture(String profilePicture) {
         this.profilePicture = profilePicture;
+    }
+
+    @org.jetbrains.annotations.NotNull
+    @Contract(pure = true)
+    public static String getDefaultProfilePicture() {
+        return defaultProfilePath + defaultPicture;
     }
 
     @Override

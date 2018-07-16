@@ -1,13 +1,19 @@
 package xin.ewenlai.news.service;
 
+import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import xin.ewenlai.news.dao.UserDAO;
 import xin.ewenlai.news.pojo.User;
+import xin.ewenlai.news.utils.Code;
+import xin.ewenlai.news.utils.Constants;
 import xin.ewenlai.news.utils.NewsLogger;
 import xin.ewenlai.news.utils.UserUtils;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.*;
 
 /**
  * description : 用户管理服务，提供用户的登录、注册、修改信息等服务。
@@ -18,6 +24,9 @@ import javax.servlet.http.HttpServletRequest;
  */
 @Service
 public class UserService {
+    @Value("${img.location}")
+    private String imgLocation;
+
     private final UserDAO userDAO;
 
     @Autowired
@@ -78,7 +87,7 @@ public class UserService {
                     UserUtils.PasswordSymbolIsRight(user.getPassword()) &&
                     UserUtils.NicknameLengthIsRight(user.getNickname()) &&
                     UserUtils.SexIsRight(user.getSex())) {
-                user.setProfilePicture(User.defaultProfilePiecture);
+                user.setProfilePicture(User.getDefaultProfilePicture());
                 userDAO.save(user);
                 NewsLogger.info(user.toString() + "注册成功");
                 return true;
@@ -141,4 +150,50 @@ public class UserService {
     public boolean existsByUsername(String username) {
         return userDAO.existsByName(username);
     }
+
+    /**
+     * 上传头像。
+     *
+     * @param multipartFile 头像文件
+     * @param username      用户名
+     * @return 上传结果
+     * @date 18-7-16
+     * @time 下午6:17
+     * @author lwwen
+     */
+    public JSONObject uploadProfilePicture(MultipartFile multipartFile, String username) {
+        JSONObject jsonObject = new JSONObject();
+        File file = new File(imgLocation);
+        if (!file.exists()) {
+            file.mkdirs();
+        }
+        if (userDAO.existsByName(username)) {
+            String filename = Constants.getUUID32() + ".jpg";
+            // 上传文件
+            try (FileInputStream input = (FileInputStream) multipartFile.getInputStream();
+                 BufferedOutputStream output = new BufferedOutputStream(new FileOutputStream(
+                         imgLocation + File.separator + filename))) {
+                byte[] bytes = new byte[1024];
+                int length;
+                while ((length = input.read(bytes)) != -1) {
+                    output.write(bytes, 0, length);
+                }
+                output.flush();
+                // 修改用户头像连接
+                User user = userDAO.findByName(username);
+                user.setProfilePicture(User.defaultProfilePath + File.separator + filename);
+                userDAO.save(user);
+                jsonObject.put("code", Code.SUCCESS.getValue());
+                jsonObject.put("message", "用户头像上传成功");
+            } catch (IOException e) {
+                jsonObject.put("code", Code.FAIL.getValue());
+                jsonObject.put("message", "用户头像上传失败");
+            }
+        } else {
+            jsonObject.put("code", Code.FAIL.getValue());
+            jsonObject.put("message", "用户头像上传失败");
+        }
+        return jsonObject;
+    }
+
 }
