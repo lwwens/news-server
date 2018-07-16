@@ -34,6 +34,8 @@ public class NewsComment {
     @Size(max = 200)
     private String content;
 
+    private long likeCount;
+
     public long getId() {
         return id;
     }
@@ -72,5 +74,13 @@ public class NewsComment {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public long getLikeCount() {
+        return likeCount;
+    }
+
+    public void setLikeCount(long likeCount) {
+        this.likeCount = likeCount;
     }
 }

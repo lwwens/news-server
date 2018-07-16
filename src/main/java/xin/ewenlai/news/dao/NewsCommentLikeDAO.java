@@ -23,4 +23,6 @@ public interface NewsCommentLikeDAO extends JpaRepository<NewsCommentLike, Long>
     @Modifying
     @Query("delete from NewsCommentLike where user = ?1 and newsComment = ?2")
     void deleteByUserAndComment(User user, NewsComment newsComment);
+
+    long countByNewsComment(NewsComment newsComment);
 }

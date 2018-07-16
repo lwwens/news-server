@@ -3,6 +3,7 @@ package xin.ewenlai.news.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import xin.ewenlai.news.dao.NewsCommentDAO;
+import xin.ewenlai.news.dao.NewsCommentLikeDAO;
 import xin.ewenlai.news.dao.UserDAO;
 import xin.ewenlai.news.pojo.NewsComment;
 import xin.ewenlai.news.pojo.User;
@@ -27,10 +28,13 @@ public class NewsCommentService {
 
     private final UserDAO userDAO;
 
+    private final NewsCommentLikeDAO likeDAO;
+
     @Autowired
-    public NewsCommentService(NewsCommentDAO newsCommentDAO, UserDAO userDAO) {
+    public NewsCommentService(NewsCommentDAO newsCommentDAO, UserDAO userDAO, NewsCommentLikeDAO likeDAO) {
         this.newsCommentDAO = newsCommentDAO;
         this.userDAO = userDAO;
+        this.likeDAO = likeDAO;
     }
 
     /**
@@ -80,9 +84,13 @@ public class NewsCommentService {
         if (NewsCommentUtils.IsURL(newsURL)) {
             List<NewsComment> comments = newsCommentDAO.findByNewsURL(newsURL);
             for (int i = 0; i < comments.size(); i++) {
+                // 隐藏密码
                 User user = comments.get(i).getUser();
                 user.setPassword("******");
                 comments.get(i).setUser(user);
+                // 获取点赞数
+                long likeCount = likeDAO.countByNewsComment(comments.get(i));
+                comments.get(i).setLikeCount(likeCount);
             }
             return comments;
         }
