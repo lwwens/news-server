@@ -113,4 +113,20 @@ public class NewsCommentService {
         }
         return false;
     }
+
+    /**
+     * 根据用户名和新闻URL判断是否已经发表评论。
+     *
+     * @param username 用户名
+     * @param newsURL  新闻URL
+     * @return 是否发表
+     * @date 18-7-16
+     * @time 下午2:02
+     * @author lwwen
+     */
+    public boolean existsByUsernameAndNewsURL(String username, String newsURL) {
+        User user = new User();
+        user.setName(username);
+        return newsCommentDAO.existsByUserAndNewsURL(user, newsURL);
+    }
 }

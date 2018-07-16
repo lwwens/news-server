@@ -2,6 +2,7 @@ package xin.ewenlai.news.dao;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import xin.ewenlai.news.pojo.NewsComment;
+import xin.ewenlai.news.pojo.User;
 
 import java.util.List;
 
@@ -14,4 +15,6 @@ import java.util.List;
  */
 public interface NewsCommentDAO extends JpaRepository<NewsComment, Long> {
     List<NewsComment> findByNewsURL(String newsURL);
+
+    boolean existsByUserAndNewsURL(User user, String newsURL);
 }
