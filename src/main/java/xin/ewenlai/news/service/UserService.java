@@ -24,7 +24,7 @@ import java.io.*;
  */
 @Service
 public class UserService {
-    @Value("${img.location}")
+    @Value("${web.upload.image}")
     private String imgLocation;
 
     private final UserDAO userDAO;
@@ -172,7 +172,7 @@ public class UserService {
             // 上传文件
             try (FileInputStream input = (FileInputStream) multipartFile.getInputStream();
                  BufferedOutputStream output = new BufferedOutputStream(new FileOutputStream(
-                         imgLocation + File.separator + filename))) {
+                         imgLocation + User.defaultProfilePath + File.separator + filename))) {
                 byte[] bytes = new byte[1024];
                 int length;
                 while ((length = input.read(bytes)) != -1) {

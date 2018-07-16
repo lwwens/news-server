@@ -21,6 +21,16 @@ spring:
     restart:
       enabled: true
   mvc:
-    static-path-pattern: /static/**
-img:
-  location: /home/lwwen/Documents/Project/IdeaProjects/news/src/main/resources/static/upload/image
+    static-path-pattern: /**
+  resources:
+    static-locations: classpath:/META-INF/resources/,classpath:/resources/,classpath:/static/,classpath:/public/,file:${web.upload.image}
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 15MB
+# web服务器保存上传图片路径
+web:
+  upload:
+    image: /home/lwwen/Documents/Project/IdeaProjects/news/src/main/resources
+# 调试
+debug: true
