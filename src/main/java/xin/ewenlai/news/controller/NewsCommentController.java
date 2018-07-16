@@ -3,7 +3,6 @@ package xin.ewenlai.news.controller;
 import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import xin.ewenlai.news.pojo.Comment;
 import xin.ewenlai.news.pojo.NewsComment;
 import xin.ewenlai.news.service.NewsCommentService;
 import xin.ewenlai.news.utils.Code;
@@ -60,7 +59,7 @@ public class NewsCommentController {
     @RequestMapping(value = "", method = RequestMethod.GET)
     public JSONObject getCommentsByNewsURL(@RequestParam String newsURL) {
         JSONObject jsonObject = new JSONObject();
-        List<Comment> newsComments = newsCommentService.getComments(newsURL);
+        List<NewsComment> newsComments = newsCommentService.getComments(newsURL);
         if (newsComments != null) {
             jsonObject.put("code", Code.SUCCESS.getValue());
             jsonObject.put("message", "获取" + newsURL + "评论成功。");
