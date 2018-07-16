@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import xin.ewenlai.news.dao.NewsCommentDAO;
 import xin.ewenlai.news.dao.UserDAO;
+import xin.ewenlai.news.pojo.Comment;
 import xin.ewenlai.news.pojo.NewsComment;
 import xin.ewenlai.news.pojo.User;
 import xin.ewenlai.news.utils.NewsCommentUtils;
@@ -12,6 +13,7 @@ import xin.ewenlai.news.utils.UserUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -62,7 +64,6 @@ public class NewsCommentService {
                     NewsCommentUtils.ContentIsLong(newsComment.getContent()) &&
                     NewsCommentUtils.IsURL(newsComment.getNewsURL())) {
                 newsCommentDAO.save(newsComment);
-                NewsLogger.info(user.getName() + "评论成功。");
                 return true;
             }
         }
@@ -78,9 +79,15 @@ public class NewsCommentService {
      * @time 下午5:34
      * @author lwwen
      */
-    public List<NewsComment> getComments(String newsURL) {
+    public List<Comment> getComments(String newsURL) {
         if (NewsCommentUtils.IsURL(newsURL)) {
-            return newsCommentDAO.findByNewsURL(newsURL);
+            List<NewsComment> comments = newsCommentDAO.findByNewsURL(newsURL);
+            List<Comment> result = new ArrayList<>();
+            for (NewsComment comment : comments) {
+                result.add(new Comment(comment.getId(), comment.getUser().getName(),
+                        comment.getTime(), comment.getNewsURL(), comment.getContent()));
+            }
+            return result;
         }
         return null;
     }
