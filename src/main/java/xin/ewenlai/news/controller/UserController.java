@@ -29,6 +29,7 @@ public class UserController {
 
     /**
      * 判断用户是否登录。
+     *
      * @param request 请求
      * @return 登录结果
      * @date 18-7-14
@@ -118,6 +119,19 @@ public class UserController {
             jsonObject.put("code", Code.FAIL.getValue());
             jsonObject.put("message", "用户" + username + "修改信息失败。");
             jsonObject.put("data", null);
+        }
+        return jsonObject;
+    }
+
+    @RequestMapping(value = "/logout", method = RequestMethod.GET)
+    public JSONObject logout(@RequestParam(value = "username") String username) {
+        JSONObject jsonObject = new JSONObject();
+        if (userService.existsByUsername(username)) {
+            jsonObject.put("code", Code.SUCCESS.getValue());
+            jsonObject.put("message", "用户" + username + "退出登录");
+        } else {
+            jsonObject.put("code", Code.FAIL.getValue());
+            jsonObject.put("message", "用户" + username + "不存在");
         }
         return jsonObject;
     }

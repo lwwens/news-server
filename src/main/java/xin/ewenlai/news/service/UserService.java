@@ -65,10 +65,8 @@ public class UserService {
      */
     public boolean register(HttpServletRequest request) {
         String username = request.getParameter("username");
-        // 判断用户名是否符合要求，且该用户是否不存在
-        if (UserUtils.UsernameLengthIsRight(username) &&
-                UserUtils.UsernameSymbolIsRight(username) &&
-                !userDAO.existsByName(username)) {
+        // 判断用户是否不存在
+        if (!userDAO.existsByName(username)) {
             User user = new User();
             user.setName(username);
             user.setPassword(request.getParameter("password"));
@@ -129,5 +127,18 @@ public class UserService {
         }
         NewsLogger.info("用户" + username + "不存在。");
         return null;
+    }
+
+    /**
+     * 判断用户是否存在.
+     *
+     * @param username 用户名
+     * @return 是否存在
+     * @date 18-7-16
+     * @time 上午10:18
+     * @author lwwen
+     */
+    public boolean existsByUsername(String username) {
+        return userDAO.existsByName(username);
     }
 }
