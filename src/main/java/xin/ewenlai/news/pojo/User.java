@@ -20,18 +20,18 @@ public class User {
     private static final String defaultPicture = "/monkey.jpg";
 
     @Id
-    @Size(min = 3, max = 20)
+//    @Size(min = 3, max = 20)
     private String name;
 
     @NotNull
-    @Size(min = 3, max = 30)
+//    @Size(min = 3, max = 30)
     private String nickname;
 
     @NotNull
-    @Size(min = 6, max = 20)
+//    @Size(min = 6, max = 20)
     private String password;
 
-    @Column(length = 1)
+//    @Column(length = 1)
     @NotNull
     private String sex;
 

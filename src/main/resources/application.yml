@@ -33,4 +33,4 @@ web:
   upload:
     image: /home/lwwen/Documents/Project/IdeaProjects/news/src/main/resources
 # 调试
-debug: true
+debug: false

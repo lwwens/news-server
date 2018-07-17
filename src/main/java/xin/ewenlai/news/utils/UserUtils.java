@@ -20,8 +20,9 @@ public class UserUtils {
      * @return 结果
      */
     public static boolean UsernameLengthIsRight(@NotNull String username) {
-        return username.codePointCount(0, username.length()) >= 3 &&
-                username.codePointCount(0, username.length()) <= 20;
+//        return username.codePointCount(0, username.length()) >= 3 &&
+//                username.codePointCount(0, username.length()) <= 20;
+        return true;
     }
 
     /**
@@ -31,11 +32,11 @@ public class UserUtils {
      * @return 结果
      */
     public static boolean UsernameSymbolIsRight(@NotNull String username) {
-        String usernameRegEx = "[a-zA-Z]{1}[a-zA-Z0-9_]";   // 跟 java 变量名规则一样
-        Pattern usernamePattern = Pattern.compile(usernameRegEx);
-        Matcher usernameMatcher = usernamePattern.matcher(username);
-        return usernameMatcher.find();
-
+//        String usernameRegEx = "[a-zA-Z]{1}[a-zA-Z0-9_]";   // 跟 java 变量名规则一样
+//        Pattern usernamePattern = Pattern.compile(usernameRegEx);
+//        Matcher usernameMatcher = usernamePattern.matcher(username);
+//        return usernameMatcher.find();
+        return true;
     }
 
     /**
@@ -45,8 +46,9 @@ public class UserUtils {
      * @return 结果
      */
     public static boolean PasswordLengthIsRight(@NotNull String password) {
-        return password.codePointCount(0, password.length()) >= 6 &&
-                password.codePointCount(0, password.length()) <= 20;
+//        return password.codePointCount(0, password.length()) >= 6 &&
+//                password.codePointCount(0, password.length()) <= 20;
+        return true;
     }
 
     /**
@@ -56,11 +58,12 @@ public class UserUtils {
      * @return 结果
      */
     public static boolean PasswordSymbolIsRight(@NotNull String password) {
-        int flag = 0;
-        flag += password.matches(".*\\d+.*") ? 1 : 0;        // 判断是否含有数字
-        flag += password.matches(".*[a-zA-Z]+.*") ? 1 : 0;   // 判断是否含有字母
-        flag += password.matches(".*[~!@#$%^&*()_+|<>,.?/:;'\\[\\]{}\"]+.*") ? 1 : 0;   // 判断是否含有特殊符号
-        return flag >= 2;
+//        int flag = 0;
+//        flag += password.matches(".*\\d+.*") ? 1 : 0;        // 判断是否含有数字
+//        flag += password.matches(".*[a-zA-Z]+.*") ? 1 : 0;   // 判断是否含有字母
+//        flag += password.matches(".*[~!@#$%^&*()_+|<>,.?/:;'\\[\\]{}\"]+.*") ? 1 : 0;   // 判断是否含有特殊符号
+//        return flag >= 2;
+        return true;
     }
 
     /**
@@ -70,11 +73,13 @@ public class UserUtils {
      * @return 结果
      */
     public static boolean NicknameLengthIsRight(@NotNull String nickname) {
-        return nickname.codePointCount(0, nickname.length()) >= 3 &&
-                nickname.codePointCount(0, nickname.length()) <= 30;
+//        return nickname.codePointCount(0, nickname.length()) >= 3 &&
+//                nickname.codePointCount(0, nickname.length()) <= 30;
+        return true;
     }
 
     public static boolean SexIsRight(String sex) {
-        return "M".equals(sex) || "F".equals(sex);
+//        return "M".equals(sex) || "F".equals(sex);
+        return true;
     }
 }
