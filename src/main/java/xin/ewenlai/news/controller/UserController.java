@@ -2,17 +2,16 @@ package xin.ewenlai.news.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import xin.ewenlai.news.pojo.User;
 import xin.ewenlai.news.service.UserService;
 import xin.ewenlai.news.utils.Code;
-import xin.ewenlai.news.utils.Constants;
 import xin.ewenlai.news.utils.NewsLogger;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.*;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 
 /**
  * description : 用户控制器，提供用户的登录、注册、修改信息等功能。
@@ -88,9 +87,9 @@ public class UserController {
      * @return 注册结果
      */
     @RequestMapping(value = "", method = RequestMethod.POST)
-    public JSONObject register(HttpServletRequest request) {
+    public JSONObject register(HttpServletRequest request) throws UnsupportedEncodingException {
         JSONObject jsonObject = new JSONObject();
-        String username = request.getParameter("username");
+        String username = URLDecoder.decode(request.getParameter("username"), "utf-8");
         if (userService.register(request)) {
             jsonObject.put("code", Code.SUCCESS.getValue());
             jsonObject.put("message", "新用户" + username + "注册成功。");

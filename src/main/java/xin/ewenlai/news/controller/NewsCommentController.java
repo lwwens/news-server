@@ -9,6 +9,7 @@ import xin.ewenlai.news.utils.Code;
 import xin.ewenlai.news.utils.NewsLogger;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 
@@ -36,7 +37,7 @@ public class NewsCommentController {
      * @return 返回的 JSON 数据
      */
     @RequestMapping(value = "", method = RequestMethod.POST)
-    public JSONObject addComment(HttpServletRequest request) {
+    public JSONObject addComment(HttpServletRequest request) throws UnsupportedEncodingException {
         JSONObject jsonObject = new JSONObject();
         String username = request.getParameter("username");
         String newsURL = request.getParameter("newsURL");

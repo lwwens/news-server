@@ -11,6 +11,8 @@ import xin.ewenlai.news.utils.NewsCommentUtils;
 import xin.ewenlai.news.utils.UserUtils;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
@@ -46,7 +48,7 @@ public class NewsCommentService {
      * @time 下午5:35
      * @author lwwen
      */
-    public boolean addComment(HttpServletRequest request) {
+    public boolean addComment(HttpServletRequest request) throws UnsupportedEncodingException {
         String username = request.getParameter("username");
         // 判断用户名是否符合要求，并判断是否存在
         if (username != null &&
@@ -57,7 +59,7 @@ public class NewsCommentService {
             User user = new User();
             user.setName(username);
             newsComment.setUser(user);
-            newsComment.setContent(request.getParameter("content"));
+            newsComment.setContent(URLDecoder.decode(request.getParameter("content"), "utf-8"));
             newsComment.setNewsURL(request.getParameter("newsURL"));
             newsComment.setTime(new Timestamp(new Date().getTime()));
             // 判断评论内容长度、新闻 URL 是否符合要求
