@@ -1,11 +1,12 @@
 server:
-  port: 10280
+  port: 20280
 spring:
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
     username: news
     password: news1234
-    url: jdbc:mysql://ewenlai.xin:3306/news?autoReconnect=true&useUnicode=true&characterEncoding=UTF-8&useSSL=true&serverTimezone=GMT%2b8
+#    url: jdbc:mysql://ewenlai.xin:3306/news?autoReconnect=true&useUnicode=true&characterEncoding=UTF-8&useSSL=true&serverTimezone=GMT%2b8
+    url: jdbc:mysql://localhost:3306/news?autoReconnect=true&useUnicode=true&characterEncoding=UTF-8&useSSL=true&serverTimezone=GMT%2b8
   http:
     encoding:
       charset: UTF-8
@@ -31,4 +32,5 @@ spring:
 # web服务器保存上传图片路径
 web:
   upload:
+#    image: /home/lwwen/Documents/Project/java/news/upload
     image: /home/aliyunzy/Documents/Project/java/news/upload

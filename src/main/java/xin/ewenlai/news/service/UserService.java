@@ -163,7 +163,7 @@ public class UserService {
      */
     public JSONObject uploadProfilePicture(MultipartFile multipartFile, String username) {
         JSONObject jsonObject = new JSONObject();
-        File file = new File(imgLocation);
+        File file = new File(imgLocation + User.defaultProfilePath);
         if (!file.exists()) {
             file.mkdirs();
         }
