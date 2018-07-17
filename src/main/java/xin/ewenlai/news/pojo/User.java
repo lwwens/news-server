@@ -16,7 +16,7 @@ import javax.validation.constraints.Size;
 @Entity
 @Table(name = "users")
 public class User {
-    public static final String defaultProfilePath = "/static/upload/image";
+    public static final String defaultProfilePath = "/image";
     private static final String defaultPicture = "/monkey.jpg";
 
     @Id

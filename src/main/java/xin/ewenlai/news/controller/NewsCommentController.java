@@ -63,7 +63,7 @@ public class NewsCommentController {
     @RequestMapping(value = "", method = RequestMethod.GET)
     public JSONObject getCommentsByNewsURL(@RequestParam String newsURL) {
         JSONObject jsonObject = new JSONObject();
-        List<NewsComment> newsComments = newsCommentService.getComments(newsURL);
+        List<NewsComment> newsComments = newsCommentService.getCommentsByNewsURL(newsURL);
         if (newsComments != null) {
             jsonObject.put("code", Code.SUCCESS.getValue());
             jsonObject.put("message", "获取" + newsURL + "评论成功。");
@@ -75,6 +75,17 @@ public class NewsCommentController {
             jsonObject.put("data", null);
             NewsLogger.info("获取" + newsURL + "评论失败。");
         }
+        return jsonObject;
+    }
+
+    @RequestMapping(value = "/{username}", method = RequestMethod.GET)
+    public JSONObject getCommentsByUsername(@PathVariable(value = "username") String username) {
+        JSONObject jsonObject = new JSONObject();
+        newsCommentService.getCommentsByUsername(username);
+        jsonObject.put("code", Code.SUCCESS.getValue());
+        jsonObject.put("message", "获取用户" + username + "的所有评论。");
+        jsonObject.put("data", newsCommentService.getCommentsByUsername(username));
+        NewsLogger.info("获取用户" + username + "的所有评论。");
         return jsonObject;
     }
 

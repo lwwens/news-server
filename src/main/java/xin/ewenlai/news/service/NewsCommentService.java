@@ -82,21 +82,32 @@ public class NewsCommentService {
      * @time 下午5:34
      * @author lwwen
      */
-    public List<NewsComment> getComments(String newsURL) {
+    public List<NewsComment> getCommentsByNewsURL(String newsURL) {
         if (NewsCommentUtils.IsURL(newsURL)) {
             List<NewsComment> comments = newsCommentDAO.findByNewsURL(newsURL);
-            for (int i = 0; i < comments.size(); i++) {
-                // 隐藏密码
-                User user = comments.get(i).getUser();
-                user.setPassword("******");
-                comments.get(i).setUser(user);
-                // 获取点赞数
-                long likeCount = likeDAO.countByNewsComment(comments.get(i));
-                comments.get(i).setLikeCount(likeCount);
-            }
-            return comments;
+            return hidePassword(comments);
         }
         return null;
+    }
+
+    public List<NewsComment> getCommentsByUsername(String username) {
+        User user = new User();
+        user.setName(username);
+        List<NewsComment> comments = newsCommentDAO.findByUser(user);
+        return hidePassword(comments);
+    }
+
+    private List<NewsComment> hidePassword(List<NewsComment> comments) {
+        for (int i = 0; i < comments.size(); i++) {
+            // 隐藏密码
+            User user = comments.get(i).getUser();
+            user.setPassword("******");
+            comments.get(i).setUser(user);
+            // 获取点赞数
+            long likeCount = likeDAO.countByNewsComment(comments.get(i));
+            comments.get(i).setLikeCount(likeCount);
+        }
+        return comments;
     }
 
     /**

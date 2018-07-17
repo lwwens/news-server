@@ -16,5 +16,7 @@ import java.util.List;
 public interface NewsCommentDAO extends JpaRepository<NewsComment, Long> {
     List<NewsComment> findByNewsURL(String newsURL);
 
+    List<NewsComment> findByUser(User user);
+
     boolean existsByUserAndNewsURL(User user, String newsURL);
 }
