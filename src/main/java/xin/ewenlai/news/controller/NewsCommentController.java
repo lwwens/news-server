@@ -41,14 +41,15 @@ public class NewsCommentController {
         JSONObject jsonObject = new JSONObject();
         String username = request.getParameter("username");
         String newsURL = request.getParameter("newsURL");
-        if (!newsCommentService.existsByUsernameAndNewsURL(username, newsURL) &&
-                newsCommentService.addComment(request)) {
+        if (!newsCommentService.existsByUsernameAndNewsURL(username, newsURL)) {
             jsonObject.put("code", Code.SUCCESS.getValue());
             jsonObject.put("message", username + "评论成功。");
+            jsonObject.put("data", newsCommentService.addComment(request).getId());
             NewsLogger.info(username + "评论成功。");
         } else {
             jsonObject.put("code", Code.FAIL.getValue());
             jsonObject.put("message", username + "评论失败。");
+            jsonObject.put("data", null);
             NewsLogger.info(username + "评论失败。");
         }
         return jsonObject;

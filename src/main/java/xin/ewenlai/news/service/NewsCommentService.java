@@ -48,7 +48,7 @@ public class NewsCommentService {
      * @time 下午5:35
      * @author lwwen
      */
-    public boolean addComment(HttpServletRequest request) throws UnsupportedEncodingException {
+    public NewsComment addComment(HttpServletRequest request) throws UnsupportedEncodingException {
         String username = request.getParameter("username");
         // 判断用户名是否符合要求，并判断是否存在
         if (username != null &&
@@ -66,11 +66,10 @@ public class NewsCommentService {
             if (newsComment.getContent() != null &&
                     NewsCommentUtils.ContentIsLong(newsComment.getContent()) &&
                     NewsCommentUtils.IsURL(newsComment.getNewsURL())) {
-                newsCommentDAO.save(newsComment);
-                return true;
+                return newsCommentDAO.save(newsComment);
             }
         }
-        return false;
+        return null;
     }
 
     /**
